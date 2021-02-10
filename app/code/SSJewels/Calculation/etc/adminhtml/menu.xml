@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="SSJewels_Calculation::global_properties" title="Global Properties" module="SSJewels_Calculation" sortOrder="51" resource="SSJewels_Calculation::global_properties"/>
+        <add id="SSJewels_Calculation::ring" title="Ring" module="SSJewels_Calculation" sortOrder="99" parent="SSJewels_Calculation::global_properties" action="categoryProp/CalcProp/Index" resource="SSJewels_Calculation::ring"/>
+    </menu>
+</config>
