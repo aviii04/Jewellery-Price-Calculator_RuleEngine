@@ -295,6 +295,7 @@ return [
         'Klarna_Kp' => 1,
         'PayPal_Braintree' => 1,
         'PayPal_BraintreeGraphQl' => 1,
+        'SSJewels_Calculation' => 1,
         'SSJewels_Product' => 1,
         'Temando_ShippingRemover' => 1,
         'Vertex_Tax' => 1,
