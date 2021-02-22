@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+<!-- Metal Fine Price Table  -->
+    <table name="metal_fine_price" resource="default" engine="innodb" comment="Metal Fine Price">
+        <column xsi:type="smallint" name="metal_id" unsigned="true" nullable="false" identity="true"
+                comment="Metal Fine Price ID"/>
+        <column xsi:type="varchar" name="metal_name" nullable="false" length="32" comment="Metal Name"/>
+        <column xsi:type="decimal" name="fine_price" nullable="false" comment="Fine Price"/>
+        <column xsi:type="timestamp" name="created_datetime" nullable="false" default="CURRENT_TIMESTAMP" on_update="false" comment="Created Datetime"/>
+        <column xsi:type="timestamp" name="updated_datetime" nullable="false" default="CURRENT_TIMESTAMP" on_update="true" comment="Updated Datetime"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="metal_id"/>
+        </constraint>
+    </table>
+</schema>
