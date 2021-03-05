@@ -4,5 +4,6 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
     <preference for="SSJewels\Calculation\Api\CrudRepositoryInterface" type="SSJewels\Calculation\Model\CrudRepository"/>
+    <preference for="SSJewels\Calculation\Api\Data\CrudRepositoryDataInterface" type="SSJewels\Calculation\Model\CrudRepositoryData"/>
 
 </config>
