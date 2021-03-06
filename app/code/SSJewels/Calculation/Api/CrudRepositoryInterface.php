@@ -3,14 +3,12 @@
 
 namespace SSJewels\Calculation\Api;
 
-use SSJewels\Calculation\Api\Data\CrudRepositoryDataInterface;
-
 interface CrudRepositoryInterface
 {
 
     /**
      * @param int $id
-     * @return CrudRepositoryDataInterface
+     * @return SSJewels\Calculation\Api\Data\CrudRepositoryDataInterface
      */
     public function getById($id);
 
