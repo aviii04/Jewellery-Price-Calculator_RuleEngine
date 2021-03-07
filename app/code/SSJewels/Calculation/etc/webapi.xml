@@ -9,5 +9,17 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
+    <route method="POST" url="/V1/crud_operation">
+        <service class="SSJewels\Calculation\Api\CrudRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route method="DELETE" url="/V1/crud_operation/:id">
+        <service class="SSJewels\Calculation\Api\CrudRepositoryInterface" method="delete"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
 
 </routes>

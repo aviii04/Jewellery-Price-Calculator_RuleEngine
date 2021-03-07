@@ -4,10 +4,14 @@
 namespace SSJewels\Calculation\Model;
 
 
+use SSJewels\Calculation\Api\Data\CrudRepositoryDataInterface;
 use SSJewels\Calculation\Api\CrudRepositoryInterface;
 use SSJewels\Calculation\Model\CrudRepositoryDataFactory as CrudModelFactory;
 use SSJewels\Calculation\Model\ResourceModel\CrudRepositoryData as CrudResourceModel;
 use SSJewels\Calculation\Model\ResourceModel\CrudRepository\CollectionFactory as CrudCollectionFactory;
+
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 
 class CrudRepository implements CrudRepositoryInterface
 {
@@ -16,14 +20,21 @@ class CrudRepository implements CrudRepositoryInterface
     protected $collectionFactory;
     protected $resourceModel;
 
+    protected $grouped;
+    protected $productRepo;
+
     /**
      * CrudRepository constructor.
+     * @param ProductRepositoryInterface $productRepo
+     * @param Grouped $grouped
      * @param CrudModelFactory $modelFactory
      * @param CrudCollectionFactory $collectionFactory
      * @param CrudResourceModel $resourceModel
      */
-    public function __construct(CrudModelFactory $modelFactory, CrudCollectionFactory $collectionFactory, CrudResourceModel $resourceModel)
+    public function __construct(ProductRepositoryInterface $productRepo, Grouped $grouped, CrudModelFactory $modelFactory, CrudCollectionFactory $collectionFactory, CrudResourceModel $resourceModel)
     {
+        $this->productRepo = $productRepo;
+        $this->grouped = $grouped;
         $this->modelFactory = $modelFactory;
         $this->collectionFactory = $collectionFactory;
         $this->resourceModel = $resourceModel;
@@ -36,7 +47,63 @@ class CrudRepository implements CrudRepositoryInterface
     {
         $object = $this->modelFactory->create();
         $this->resourceModel->load($object, $id);
+
+
+//        ==============Retrieving global object===============
+//        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+//        $model = $objectManager->get('Magento\Variable\Model\Variable')->loadByCode('finePriceGold');
+//        $plain_value = $model->getPlainValue();
+//        $object->setFinePrice($plain_value);
+
+        //============Retrieving grouped product==============
+        $sku = "Diamond Price Details";
+        $attributeCode = "Diamond Price Details";
+        $diamondPriceDetail = $this->productRepo->get($sku);
+//        $diamondPriceDetail->getCustomAttribute();
+        $associatedProducts = $this->grouped->getAssociatedProducts($diamondPriceDetail);
+        $product = $associatedProducts[0];
+//        $object->setMetalName($product->getCustomAttribute('typeA_size1')->getValue());
+
+
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $productt = $objectManager->create('Magento\Catalog\Model\Product')->load($product->getId());
+        $attrValue = $productt->getData('typeA_size2');
+
+
+//        foreach($associatedProducts as $product) {
+//           $object->setMetalName($product->getCustomAttribute('typeA_size1')->getValue());
+//        }
+        $object->setMetalName($attrValue);
+
+
+
         return $object;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function save(CrudRepositoryDataInterface $entity)
+    {
+        $this->resourceModel->save($entity);
+        return $entity;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function delete($id)
+    {
+
+        $object = $this->modelFactory->create();
+        $this->resourceModel->load($object, $id);
+        try {
+            $this->resourceModel->delete($object);
+        } catch (\Exception $exception) {
+            throw new CouldNotDeleteException(
+                __('Could not delete the entry: %1', $exception->getMessage())
+            );
+        }
+        return true;
+    }
 }
