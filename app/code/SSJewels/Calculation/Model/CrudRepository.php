@@ -6,6 +6,9 @@ namespace SSJewels\Calculation\Model;
 
 use SSJewels\Calculation\Api\Data\CrudRepositoryDataInterface;
 use SSJewels\Calculation\Api\CrudRepositoryInterface;
+use SSJewels\Calculation\Helper\DiamondPrice;
+use SSJewels\Calculation\Helper\Metal;
+use SSJewels\Calculation\Helper\MetalFinePrice;
 use SSJewels\Calculation\Model\CrudRepositoryDataFactory as CrudModelFactory;
 use SSJewels\Calculation\Model\ResourceModel\CrudRepositoryData as CrudResourceModel;
 use SSJewels\Calculation\Model\ResourceModel\CrudRepository\CollectionFactory as CrudCollectionFactory;
@@ -23,16 +26,23 @@ class CrudRepository implements CrudRepositoryInterface
     protected $grouped;
     protected $productRepo;
 
+    protected $diamondPrice;
+    protected $metalFinePrice;
+
     /**
      * CrudRepository constructor.
+     * @param MetalFinePrice $metalFinePrice
+     * @param DiamondPrice $diamondPrice
      * @param ProductRepositoryInterface $productRepo
      * @param Grouped $grouped
      * @param CrudModelFactory $modelFactory
      * @param CrudCollectionFactory $collectionFactory
      * @param CrudResourceModel $resourceModel
      */
-    public function __construct(ProductRepositoryInterface $productRepo, Grouped $grouped, CrudModelFactory $modelFactory, CrudCollectionFactory $collectionFactory, CrudResourceModel $resourceModel)
+    public function __construct(MetalFinePrice $metalFinePrice, DiamondPrice $diamondPrice, ProductRepositoryInterface $productRepo, Grouped $grouped, CrudModelFactory $modelFactory, CrudCollectionFactory $collectionFactory, CrudResourceModel $resourceModel)
     {
+        $this->metalFinePrice = $metalFinePrice;
+        $this->diamondPrice = $diamondPrice;
         $this->productRepo = $productRepo;
         $this->grouped = $grouped;
         $this->modelFactory = $modelFactory;
@@ -59,21 +69,21 @@ class CrudRepository implements CrudRepositoryInterface
         $sku = "Diamond Price Details";
         $attributeCode = "Diamond Price Details";
         $diamondPriceDetail = $this->productRepo->get($sku);
-//        $diamondPriceDetail->getCustomAttribute();
-        $associatedProducts = $this->grouped->getAssociatedProducts($diamondPriceDetail);
-        $product = $associatedProducts[0];
-//        $object->setMetalName($product->getCustomAttribute('typeA_size1')->getValue());
+//        $diamondPriceDetail->getName();
+//        $associatedProducts = $this->grouped->getAssociatedProducts($diamondPriceDetail);
+//        $product = $associatedProducts[0];
+//        $object->setMetalName($product->getName());
 
 
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $productt = $objectManager->create('Magento\Catalog\Model\Product')->load($product->getId());
-        $attrValue = $productt->getData('typeA_size2');
+//        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+//        $productt = $objectManager->create('Magento\Catalog\Model\Product')->load($product->getId());
+//        $attrValue = $productt->getData('typeA_size2');
 
 
 //        foreach($associatedProducts as $product) {
 //           $object->setMetalName($product->getCustomAttribute('typeA_size1')->getValue());
 //        }
-        $object->setMetalName($attrValue);
+        $object->setMetalName($this->diamondPrice->getPrice());
 
 
 
