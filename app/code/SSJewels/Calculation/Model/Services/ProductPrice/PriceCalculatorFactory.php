@@ -9,6 +9,20 @@ use SSJewels\Calculation\Model\Services\ProductPrice\Calculator\BanglePriceCalcu
 class PriceCalculatorFactory
 {
 
+    protected $ringPriceCalculator;
+    protected $banglePriceCalculator;
+
+    /**
+     * @param RingPriceCalculator $ringPriceCalculator
+     * @param BanglePriceCalculator $banglePriceCalculator
+     */
+    public function __construct(RingPriceCalculator $ringPriceCalculator, BanglePriceCalculator $banglePriceCalculator){
+
+        $this->ringPriceCalculator = $ringPriceCalculator;
+        $this->banglePriceCalculator = $banglePriceCalculator;
+
+    }
+
     /**
      * @param string $product
      *
@@ -18,9 +32,9 @@ class PriceCalculatorFactory
     {
         switch($product){
 
-            case "RING": return new RingPriceCalculator();
+            case "RING": return $this->ringPriceCalculator;
 
-            case "BANGLES": return  new BanglePriceCalculator();
+            case "BANGLES": return $this->banglePriceCalculator;
 
             default : throw new NotFoundException(__('No Price Calculator found for Product : %1', $product));
 

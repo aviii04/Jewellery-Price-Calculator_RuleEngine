@@ -26,19 +26,19 @@ class GoldPrice extends AbstractHelper
     }
 
 
-    protected function getGoldPrice(string $karat) : double
+    protected function getGoldPrice(string $karat) : float
     {
         switch($karat){
 
-            case self::$_14_KARAT: return goldPriceByKarat(58.60);
+            case self::$_14_KARAT: return $this->goldPriceByKarat(58.60);
             
-            case self::$_18_KARAT: return goldPriceByKarat(75.20);
+            case self::$_18_KARAT: return $this->goldPriceByKarat(75.20);
             
             default: "";
         }
     }
 
-    private function goldPriceByKarat($multiplier) : double
+    private function goldPriceByKarat(float $multiplier) : float
     {
         $goldFinePrice = $this->metalFinePrice->getFinePrice(Metal::GOLD);
         return ($goldFinePrice * $multiplier) / 99.5;
