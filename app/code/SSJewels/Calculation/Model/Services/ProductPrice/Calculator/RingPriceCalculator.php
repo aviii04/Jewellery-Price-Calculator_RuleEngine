@@ -17,10 +17,37 @@ class RingPriceCalculator extends GoldPrice implements PriceCalculatorInterface
      */
     public function getPrice() : string
     {
-        $price = $this->getGoldPrice("14K");
+        $goldKarat = "14K";
 
-            return $price;
+        $metalPrice = $this->getGoldPrice($goldKarat);
+        $metalWeight = $this->weightByRingSize();
+        $makingCharge = $this->makingCharge($metalWeight);
+        $diamondPrice = $this->totalDiamondPrice();
+
+        return $this->ringPrice($metalPrice, $diamondPrice, $makingCharge);
     }
+
+    private function makingCharge(float $metalWeight) : float
+    {
+        $makingCharge = 10;
+        return $makingCharge * $metalWeight;
+    }
+
+    private function totalDiamondPrice() : float
+    {
+        // TODO:
+    }
+
+    private function weightByRingSize() : float
+    {
+        // TODO:
+    }
+
+    private function ringPrice(float $metalPrice, float $diamondPrice, float $makingCharge) : float
+    {
+        return $metalPrice + $diamondPrice + $makingCharge;
+    }
+
 
 }
 
