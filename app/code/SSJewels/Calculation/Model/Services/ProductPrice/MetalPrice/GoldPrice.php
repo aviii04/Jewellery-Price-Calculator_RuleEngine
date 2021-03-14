@@ -2,49 +2,61 @@
 
 namespace SSJewels\Calculation\Model\Services\ProductPrice\MetalPrice;
 
-use SSJewels\Calculation\Helper\Metal;
-use Magento\Framework\App\Helper\AbstractHelper;
-use SSJewels\Calculation\Helper\MetalFinePrice;
+use Psr\Log\LoggerInterface;
+use SSJewels\Calculation\Helper\CustomVariable\CustomVariableManager;
+use SSJewels\Calculation\Domain\Metal;
 
-
-class GoldPrice extends AbstractHelper
+/**
+ * Class GoldPrice
+ * @package SSJewels\Calculation\Model\Services\ProductPrice\MetalPrice
+ *
+ * @author Avinash Thakur
+ */
+class GoldPrice
 {
 
-    private static $_18_KARAT = "18K";
-    private static $_14_KARAT = "14K";
+    private static string $_18_KARAT = "18K";
+    private static string $_14_KARAT = "14K";
 
-    protected $metalFinePrice;
+    private const _18_KARAT_MULTIPLIER = 75.20;
+    private const _14_KARAT_MULTIPLIER = 58.60;
+
+    private CustomVariableManager $customVariableManager;
+    private LoggerInterface $logger;
 
     /**
      * GoldPrice constructor.
-     * @param MetalFinePrice $metalFinePrice
+     * @param CustomVariableManager $customVariableManager
      */
-    public function __construct(MetalFinePrice $metalFinePrice)
+    public function __construct(CustomVariableManager $customVariableManager, LoggerInterface $logger)
     {
-        $this->metalFinePrice = $metalFinePrice;
-    
+        $this->customVariableManager = $customVariableManager;
+        $this->logger = $logger;
     }
 
-
-    protected function getGoldPrice(string $karat) : float
+    public function getGoldPrice(string $karat) : float
     {
         switch($karat){
 
-            case self::$_14_KARAT: return $this->goldPriceByKarat(58.60);
-            
-            case self::$_18_KARAT: return $this->goldPriceByKarat(75.20);
-            
+            case self::$_14_KARAT:
+                $this->logger->info("Retrieving Price for 14 Karat Gold");
+                return $this->goldPriceByKarat(self::_14_KARAT_MULTIPLIER);
+
+            case self::$_18_KARAT:
+                $this->logger->info("Retrieving Price for 18 Karat Gold");
+                return $this->goldPriceByKarat(self::_18_KARAT_MULTIPLIER);
+
             default: "";
         }
     }
 
-    private function goldPriceByKarat(float $multiplier) : float
+    private function goldPriceByKarat(float $multiplier): float
     {
-        $goldFinePrice = $this->metalFinePrice->getFinePrice(Metal::GOLD);
-        return ($goldFinePrice * $multiplier) / 99.5;
+        $goldFinePrice = $this->customVariableManager->metalFinePrice(Metal::GOLD);
+        $goldPrice = ($goldFinePrice * $multiplier) / 99.5;
+        $this->logger->info("Gold Fine Price: " . $goldFinePrice . ". Gold Price: " . $goldPrice);
+        return $goldPrice;
     }
-
- 
 
 }
 

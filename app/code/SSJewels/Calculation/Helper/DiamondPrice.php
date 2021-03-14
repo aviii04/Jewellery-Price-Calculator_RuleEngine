@@ -43,13 +43,15 @@ class DiamondPrice
     }
 
     /**
+     * @param string $diamondType
+     * @param float $diamondSize
      * @return float
      * @throws NotFoundException
      */
-    public function getPrice()
+    public function getPrice(string $diamondType, float $diamondSize): float
     {
-        $diamondType = "SI-GH";
-        $diamondSize = 10;
+//        $diamondType = "SI-GH";
+//        $diamondSize = 10;
         $this->logger->info("Retrieving Diamond Price: Type: " . $diamondType . " Size: " . $diamondSize);
         $diamondTypeConfig = $this->getDiamondType($diamondType);
 

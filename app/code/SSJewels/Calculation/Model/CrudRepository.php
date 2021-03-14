@@ -13,8 +13,13 @@ use SSJewels\Calculation\Model\CrudRepositoryDataFactory as CrudModelFactory;
 use SSJewels\Calculation\Model\ResourceModel\CrudRepositoryData as CrudResourceModel;
 use SSJewels\Calculation\Model\ResourceModel\CrudRepository\CollectionFactory as CrudCollectionFactory;
 
+use SSJewels\Calculation\Model\Services\ProductPrice\PriceCalculatorFactory;
+
 use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+
+use SSJewels\Calculation\Api\ProductDetailsInterface;
+
 
 class CrudRepository implements CrudRepositoryInterface
 {
@@ -29,8 +34,11 @@ class CrudRepository implements CrudRepositoryInterface
     protected $diamondPrice;
     protected $metalFinePrice;
 
+    protected $priceCalculatorFactory;
+
     /**
      * CrudRepository constructor.
+     * @param MetalFinePrice $priceCalculatorFactory
      * @param MetalFinePrice $metalFinePrice
      * @param DiamondPrice $diamondPrice
      * @param ProductRepositoryInterface $productRepo
@@ -39,8 +47,9 @@ class CrudRepository implements CrudRepositoryInterface
      * @param CrudCollectionFactory $collectionFactory
      * @param CrudResourceModel $resourceModel
      */
-    public function __construct(MetalFinePrice $metalFinePrice, DiamondPrice $diamondPrice, ProductRepositoryInterface $productRepo, Grouped $grouped, CrudModelFactory $modelFactory, CrudCollectionFactory $collectionFactory, CrudResourceModel $resourceModel)
+    public function __construct(PriceCalculatorFactory $priceCalculatorFactory, MetalFinePrice $metalFinePrice, DiamondPrice $diamondPrice, ProductRepositoryInterface $productRepo, Grouped $grouped, CrudModelFactory $modelFactory, CrudCollectionFactory $collectionFactory, CrudResourceModel $resourceModel)
     {
+        $this->priceCalculatorFactory = $priceCalculatorFactory;
         $this->metalFinePrice = $metalFinePrice;
         $this->diamondPrice = $diamondPrice;
         $this->productRepo = $productRepo;
@@ -83,7 +92,11 @@ class CrudRepository implements CrudRepositoryInterface
 //        foreach($associatedProducts as $product) {
 //           $object->setMetalName($product->getCustomAttribute('typeA_size1')->getValue());
 //        }
-        $object->setMetalName($this->diamondPrice->getPrice());
+        // $object->setMetalName($this->diamondPrice->getPrice());
+
+        // ===============
+        $productCalc = $this->priceCalculatorFactory->getPriceCalculator("RING");
+        $object->setMetalName($productCalc->getPrice());
 
 
 
@@ -115,5 +128,14 @@ class CrudRepository implements CrudRepositoryInterface
             );
         }
         return true;
+    }
+
+     /**
+     * @inheritDoc
+     */
+    public function getProductDetails(ProductDetailsInterface $productDetailsInterface)
+    {
+        $productCalc = $this->priceCalculatorFactory->getPriceCalculator("RING");
+        $productCalc->getPrice($productDetailsInterface);
     }
 }

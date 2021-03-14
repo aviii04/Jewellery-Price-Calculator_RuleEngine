@@ -22,4 +22,11 @@
         </resources>
     </route>
 
+    <route method="POST" url="/V1/producPrice">
+        <service class="SSJewels\Calculation\Api\CrudRepositoryInterface" method="getProductDetails"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
 </routes>

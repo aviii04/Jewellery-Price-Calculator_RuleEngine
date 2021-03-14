@@ -4,6 +4,7 @@
 namespace SSJewels\Calculation\Api;
 
 use SSJewels\Calculation\Api\Data\CrudRepositoryDataInterface;
+use SSJewels\Calculation\Api\ProductDetailsInterface;
 
 interface CrudRepositoryInterface
 {
@@ -26,5 +27,11 @@ interface CrudRepositoryInterface
      * @throws \Magento\Framework\Exception\CouldNotDeleteException
      */
     public function  delete($id);
+
+    /**
+     * @param ProductDetailsInterface $productDetailsInterface
+     * @return void
+     */
+    public function getProductDetails(ProductDetailsInterface $productDetailsInterface);
 
 }

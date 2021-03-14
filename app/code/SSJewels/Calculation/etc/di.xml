@@ -5,5 +5,9 @@
 
     <preference for="SSJewels\Calculation\Api\CrudRepositoryInterface" type="SSJewels\Calculation\Model\CrudRepository"/>
     <preference for="SSJewels\Calculation\Api\Data\CrudRepositoryDataInterface" type="SSJewels\Calculation\Model\CrudRepositoryData"/>
+    
+    <preference for="SSJewels\Calculation\Api\ProductDetailsInterface" type="SSJewels\Calculation\Model\ProductDetails"/>
+    <preference for="SSJewels\Calculation\Api\DiamondDetailInterface" type="SSJewels\Calculation\Model\DiamondDetail"/>
+
 
 </config>
