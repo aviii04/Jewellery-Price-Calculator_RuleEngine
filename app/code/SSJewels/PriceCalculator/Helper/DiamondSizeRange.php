@@ -14,21 +14,27 @@ namespace SSJewels\PriceCalculator\Helper;
 class DiamondSizeRange
 {
 
-    public array $PRICE_00_02 = array(
-        "priceAttrCode" => "diamond_size_00_02",
-        "from" => 0,
-        "to" => 2
+    public array $PRICE_0p003_0p11 = array(
+        "priceAttrCode" => "diamond_size_0p003_0p11",
+        "from" => 0.003,
+        "to" => 0.11
     );
 
-    public array $PRICE_02_08 = array(
-        "priceAttrCode" => "diamond_size_02_08",
-        "from" => 2,
-        "to" => 8
+    public array $PRICE_0p12_0p15 = array(
+        "priceAttrCode" => "diamond_size_0p12_0p15",
+        "from" => 0.12,
+        "to" => 0.15
     );
 
-    public array $PRICE_08_10 = array(
-        "priceAttrCode" => "diamond_size_08_10",
-        "from" => 8,
-        "to" => 10
+    public array $PRICE_0p16_0p23 = array(
+        "priceAttrCode" => "diamond_size_0p16_0p23",
+        "from" => 0.16,
+        "to" => 0.23
+    );
+
+    public array $PRICE_0p24_0p29 = array(
+        "priceAttrCode" => "diamond_size_0p24_0p29",
+        "from" => 0.24,
+        "to" => 0.29
     );
 }

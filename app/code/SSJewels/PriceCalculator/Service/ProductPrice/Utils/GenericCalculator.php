@@ -58,8 +58,9 @@ class GenericCalculator
         $totalPrice = 0;
         foreach ($diamondDetails as $diamondDetail) {
             if ($diamondDetail->getCount() != 0) {
-                $price = $this->diamondPrice->getPrice($diamondType, $diamondDetail->getSize());
-                $totalPrice = $totalPrice + ($price * $diamondDetail->getCount());
+                $diamondSize = $diamondDetail->getSize();
+                $price = $this->diamondPrice->getPrice($diamondType, $diamondSize);
+                $totalPrice = $totalPrice + ($price * $diamondSize * $diamondDetail->getCount());
             }
         }
         return $totalPrice;

@@ -49,8 +49,6 @@ class DiamondPrice
      */
     public function getPrice(string $diamondType, float $diamondSize): float
     {
-//        $diamondType = "SI-GH";
-//        $diamondSize = 10;
         $this->logger->info("Retrieving Diamond Price: Type: " . $diamondType . " Size: " . $diamondSize);
         $diamondTypeConfig = $this->getDiamondType($diamondType);
 
