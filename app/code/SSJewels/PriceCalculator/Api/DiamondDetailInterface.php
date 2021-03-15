@@ -12,14 +12,14 @@ interface DiamondDetailInterface
 {
     /**
      * Get the value of size
-     * @return integer
+     * @return float
      */
     public function getSize();
 
 
     /**
      * Set the value of size
-     * @param integer $size
+     * @param float $size
      * @return  void
      */
     public function setSize($size);
